@@ -75,11 +75,12 @@ namespace twitter_bot
       
                         info2 = JsonConvert.DeserializeObject<RootObject2>(json2);
                         url = info2.contracts.data[0].printFormUrl;
+                        answer = YES;
                         if (info2.contracts.data[0].products[0].OKPD.ToString() == null)
                         {
                             answer = "контракт не содержит в себе предметы, имеющие отношение к деятельности СМИ";
                         }
-                            
+                        
                         
                         //-------------------END OKPD----------------------
                     }
