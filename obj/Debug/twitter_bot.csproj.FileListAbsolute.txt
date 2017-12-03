@@ -1,0 +1,12 @@
+D:\twitter_bot\twitter_bot\twitter_bot\bin\Debug\twitter_bot.exe.config
+D:\twitter_bot\twitter_bot\twitter_bot\bin\Debug\twitter_bot.exe
+D:\twitter_bot\twitter_bot\twitter_bot\bin\Debug\twitter_bot.pdb
+D:\twitter_bot\twitter_bot\twitter_bot\bin\Debug\Hammock.ClientProfile.dll
+D:\twitter_bot\twitter_bot\twitter_bot\bin\Debug\Newtonsoft.Json.dll
+D:\twitter_bot\twitter_bot\twitter_bot\bin\Debug\TweetSharp.dll
+D:\twitter_bot\twitter_bot\twitter_bot\bin\Debug\Hammock.ClientProfile.pdb
+D:\twitter_bot\twitter_bot\twitter_bot\bin\Debug\Newtonsoft.Json.xml
+D:\twitter_bot\twitter_bot\twitter_bot\bin\Debug\TweetSharp.pdb
+D:\twitter_bot\twitter_bot\twitter_bot\obj\Debug\twitter_bot.csprojResolveAssemblyReference.cache
+D:\twitter_bot\twitter_bot\twitter_bot\obj\Debug\twitter_bot.exe
+D:\twitter_bot\twitter_bot\twitter_bot\obj\Debug\twitter_bot.pdb
