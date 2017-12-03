@@ -46,62 +46,73 @@ namespace twitter_bot
         {
         Start:
             Console.WriteLine("input");
-            int count = 0;
-            JObject jp = getInfo();
-            string url = "";
-            string answer = "";
-            //--------------------------------
-            string json = jp.ToString();
-            double contractsSum = 0;
-            info = JsonConvert.DeserializeObject<RootObject>(json);
+             int count = 1;
+             JObject jp = getInfo();
+             string url = "";
+             string answer = "";
+             //--------------------------------
+             string json = jp.ToString();
+             double contractsSum = 0;
+             info = JsonConvert.DeserializeObject<RootObject>(json);
 
-            //for(int i = 0; i < info.)
-            foreach (Result r in info.results)
-            {
-                Console.WriteLine(info.results.Count.ToString());
-                try
+             foreach (Result r in info.results)
+             {
+                 Console.WriteLine(info.results.Count.ToString());
+                 try
+                 {
+                     foreach (Contract c in info.results[0].contracts)
+                     {
+                         contractsSum += c.amount;
+                         //-------------------FOR OKPD----------------------
+                         WebRequest reqGet2 = WebRequest.Create("http://openapi.clearspending.ru/restapi/v3/contracts/get/?regnum=" + c.reg_num.ToString());
+                         WebResponse resp2 = reqGet2.GetResponse();
+                         Stream stream2 = resp2.GetResponseStream();
+                         StreamReader sr2 = new StreamReader(stream2);
+                         string s = sr2.ReadToEnd();
+                         JObject parsed2 = JObject.Parse(s);
+                         string json2 = parsed2.ToString();
+
+                         info2 = JsonConvert.DeserializeObject<RootObject2>(json2);
+                         url = info2.contracts.data[0].printFormUrl;
+                         answer = YES;
+                         if (info2.contracts.data[0].products[0].OKPD.ToString() == null)
+                         {
+                             answer = "контракт не содержит в себе предметы, имеющие отношение к деятельности СМИ";
+                         }
+                     }
+                 }
+                 catch (Exception e)
+                 {
+
+                 }
+                // Console.WriteLine("Учредитель " + r.name + " заключил контракт на сумму " + contractsSum + " " + answer + "\nссылка на заключение контракта " + url);
+                //sendTweet("Учредитель " + r.name + " заключил контракт на сумму " + contractsSum + " " + answer + "\nссылка на заключение контракта " + url);
+
+                string imagePath = string.Empty;
+                imagePath = count.ToString() + ".png";
+
+                // Tweet wtih image
+                if (imagePath.Length > 0)
                 {
-                    foreach (Contract c in info.results[0].contracts)
+                    using (var stream = new FileStream(imagePath, FileMode.Open))
                     {
-                        contractsSum += c.amount;
-                        //-------------------FOR OKPD----------------------
-                        WebRequest reqGet2 = WebRequest.Create("http://openapi.clearspending.ru/restapi/v3/contracts/get/?regnum=" + c.reg_num.ToString());
-                        WebResponse resp2 = reqGet2.GetResponse();
-                        Stream stream2 = resp2.GetResponseStream();
-                        StreamReader sr2 = new StreamReader(stream2);
-                        string s = sr2.ReadToEnd();
-                        JObject parsed2 = JObject.Parse(s);
-                        string json2 = parsed2.ToString();
-      
-                        info2 = JsonConvert.DeserializeObject<RootObject2>(json2);
-                        url = info2.contracts.data[0].printFormUrl;
-                        answer = YES;
-                        if (info2.contracts.data[0].products[0].OKPD.ToString() == null)
+                        var result = twitter.SendTweetWithMedia(new SendTweetWithMediaOptions
                         {
-                            answer = "контракт не содержит в себе предметы, имеющие отношение к деятельности СМИ";
-                        }
-                        
-                        
-                        //-------------------END OKPD----------------------
+                            Status = "Учредитель " + r.name + " заключил контракт на сумму "        + contractsSum + " " + answer + "\nссылка на заключение контракта " + url,
+                            Images = new Dictionary<string, Stream> { { "john", stream } }
+                        });
                     }
                 }
-                catch (Exception e)
-                {
-
-                }
-               // Console.WriteLine("Учредитель " + r.name + " заключил контракт на сумму " + contractsSum + " " + answer + "\nссылка на заключение контракта " + url);
-                sendTweet("Учредитель " + r.name + " заключил контракт на сумму " + contractsSum + " " + answer + "\nссылка на заключение контракта " + url);
-
                 Thread.Sleep(10000);
-            }
-            //--------------------------------
-            
-            count++;
-                
-          //  }
+             }
+             //--------------------------------
+
+             count++;            
             Thread.Sleep(4 * 60 * 60 * 1000);
             goto Start;
         }
+    
+    
 
         public static void sendTweet(string _status)
         {

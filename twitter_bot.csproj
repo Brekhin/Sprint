@@ -55,6 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ForVizualisation.cs" />
     <Compile Include="JsonToClass.cs" />
     <Compile Include="_OKPD.cs" />
     <Compile Include="Program.cs" />
